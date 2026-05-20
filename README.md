@@ -29,7 +29,9 @@ curl -fsSL https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap
 
 That's it. **One command installs myVibe into every coding agent on your machine** — Claude Code, GitHub Copilot, OpenAI Codex CLI, Cursor, and the generic `~/.agents/skills/` location.
 
-After install (and a VS Code reload), type `/myvibe` in any Copilot chat — or just say *"build me a kanban app"* and the skill auto-triggers in Claude / Copilot / Cursor.
+After install (and a VS Code reload):
+- Type `/myvibe` for **new projects** — or say *"build me a kanban app"* and the skill auto-triggers in Claude / Copilot / Cursor.
+- Type `/myedit` for **existing projects** — edit, enhance, or debug. Example: `/myedit fix the login redirect bug`. See [myedit/README.md](myedit/README.md).
 
 ---
 
