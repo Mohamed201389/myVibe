@@ -1,0 +1,5 @@
+# Robots policy for the myVibe site
+User-agent: *
+Allow: /
+
+Sitemap: https://Mohamed201389.github.io/myVibe/sitemap.xml

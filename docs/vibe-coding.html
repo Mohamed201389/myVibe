@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>What is vibe coding? A 2026 guide for AI-assisted developers | myVibe</title>
+<meta name="description" content="Vibe coding means describing what you want in plain English and letting an AI coding agent build, test, and run it. This guide explains the workflow, the tools (Claude Code, Copilot, Codex CLI, Cursor), and the rules that make it actually ship." />
+<link rel="canonical" href="https://mohamed201389.github.io/myVibe/vibe-coding.html" />
+<link rel="stylesheet" href="style.css" />
+<meta name="keywords" content="vibe coding, what is vibe coding, AI coding workflow, vibe coding tools, vibe coding tutorial, AI pair programming, Claude Code, GitHub Copilot, Codex CLI, Cursor" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="myVibe" />
+<meta property="og:title" content="What is vibe coding? A 2026 guide for AI-assisted developers" />
+<meta property="og:description" content="Vibe coding means describing what you want and letting an AI agent build it. Here's the workflow, the tools, and the rules that make it actually ship." />
+<meta property="og:url" content="https://mohamed201389.github.io/myVibe/vibe-coding.html" />
+<meta property="og:image" content="https://opengraph.githubassets.com/1/Mohamed201389/myVibe" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="What is vibe coding? A 2026 guide" />
+<meta name="twitter:description" content="The workflow, tools, and rules behind vibe coding in 2026." />
+<meta name="twitter:image" content="https://opengraph.githubassets.com/1/Mohamed201389/myVibe" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "What is vibe coding? A 2026 guide for AI-assisted developers",
+  "description": "Vibe coding means describing what you want in plain English and letting an AI coding agent build, test, and run it.",
+  "author": { "@type": "Person", "name": "Mohamed Salah", "url": "https://github.com/Mohamed201389" },
+  "datePublished": "2026-05-20",
+  "dateModified": "2026-05-20",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://mohamed201389.github.io/myVibe/vibe-coding.html" },
+  "publisher": { "@type": "Organization", "name": "myVibe", "url": "https://mohamed201389.github.io/myVibe/" }
+}
+</script>
+</head>
+<body>
+<main class="wrap">
+
+<nav class="top">
+  <a class="brand" href="./">myVibe</a>
+  <div class="links">
+    <a href="vibe-coding.html">Vibe coding</a>
+    <a href="agents-md.html">AGENTS.md</a>
+    <a href="claude-code-skills.html">Claude skills</a>
+    <a href="cursor-rules.html">Cursor rules</a>
+    <a href="https://github.com/Mohamed201389/myVibe">GitHub</a>
+  </div>
+</nav>
+
+<h1>What is <span>vibe coding</span>?</h1>
+<p class="lead">Vibe coding is the practice of describing what you want in plain English and letting an AI coding agent build, test, and run it for you. It's not "AI autocomplete" — it's an end-to-end workflow where the human sets the direction and the agent does the typing. This guide explains the workflow, the tools, the rules that make it actually ship, and where it falls apart if you skip those rules.</p>
+
+<h2>The short definition</h2>
+<p><strong>Vibe coding = stating intent + delegating execution to an AI agent.</strong> You say <em>"build me a kanban board with drag-and-drop and a SQLite backend"</em>; the agent picks the stack, scaffolds the project, writes the code, writes the tests, runs them, fixes failures, and hands you a running app. You review, course-correct, and ship.</p>
+
+<p>The term went mainstream in early 2025 when Andrej Karpathy described it as "fully giving in to the vibes" and letting the AI handle the keyboard. The pattern has since hardened into something more disciplined — a workflow with checkpoints, quality gates, and per-project rules — which is what this guide is really about.</p>
+
+<h2>Why it works now (and didn't 18 months ago)</h2>
+<ul>
+  <li><strong>Models can hold a project in context.</strong> Claude 3.5+, GPT-4.1+, and Gemini 2.5+ can keep an entire small project in their working memory, which is what "do the whole feature, not just one function" requires.</li>
+  <li><strong>Agents can run their own commands.</strong> Claude Code, Codex CLI, Cursor, and Copilot agent mode can execute shell commands, run tests, read failures, and try again — closing the loop without a human in the middle of every cycle.</li>
+  <li><strong>The community standardized rules files.</strong> <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>.cursorrules</code> — small markdown files that tell any agent how to behave in this specific repo. (See <a href="agents-md.html">our guide</a>.)</li>
+</ul>
+
+<h2>The vibe coding workflow that actually ships</h2>
+<p>Most vibe-coding sessions fail not because the model is bad but because the human <em>and</em> the model both skip planning. Here's the loop that holds up:</p>
+<ol>
+  <li><strong>One-shot intake.</strong> The agent asks every question it needs upfront in a single round: stack preference, auth, database, deployment target, design language, performance targets, testing strategy. You reply once with "go" or with overrides. No mid-build interrogation.</li>
+  <li><strong>Plan file.</strong> The agent writes <code>PLAN.md</code> — a short doc with the phases and the success criteria. You sign off.</li>
+  <li><strong>Scaffold.</strong> The agent runs the bootstrap commands itself (<code>npm create vite</code>, <code>uv init</code>, etc.). No "here's what you should run" — it actually runs.</li>
+  <li><strong>Feature loop (Ralph-style).</strong> One feature at a time: write the failing test → implement → make it pass → commit → next. If it fails three times in a row, the agent stops and asks for help. No infinite grinding.</li>
+  <li><strong>Quality gate.</strong> Lint + types + tests + build must all pass before the agent says "done". Binary, no negotiation.</li>
+  <li><strong>You review and run.</strong> The project starts on localhost. You click around. You ask for tweaks. The agent applies them through the same loop.</li>
+</ol>
+
+<h2>The tools that matter in 2026</h2>
+<table>
+  <thead><tr><th>Tool</th><th>Best for</th><th>Catch</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Claude Code</strong></td><td>Long sessions, careful refactors, complex architecture</td><td>Slower per-turn than alternatives</td></tr>
+    <tr><td><strong>GitHub Copilot (agent mode)</strong></td><td>VS Code-native flow, multi-file edits, free tier</td><td>Skill discovery quality varies by model</td></tr>
+    <tr><td><strong>OpenAI Codex CLI</strong></td><td>Terminal-first, scripted automation</td><td>Less polish than IDE-native tools</td></tr>
+    <tr><td><strong>Cursor</strong></td><td>Editor + chat in one, fast inline edits</td><td>Subscription required, monthly limits</td></tr>
+    <tr><td><strong>Windsurf</strong></td><td>"Cascade" agent for multi-step plans</td><td>Newer, smaller community</td></tr>
+  </tbody>
+</table>
+
+<p>The honest answer is: <strong>pick one and go deep, then bring the workflow with you when you switch.</strong> That's what <a href="./">myVibe</a> does — it gives every one of these agents the same rules file, so you don't relearn the workflow every time you change tools.</p>
+
+<h2>Where vibe coding falls apart</h2>
+<ul>
+  <li><strong>No planning round.</strong> If the agent starts coding before it knows what auth you want, you end up with three rewrites.</li>
+  <li><strong>No tests.</strong> "I'll add tests later" → no tests forever → silent regressions.</li>
+  <li><strong>Stale library versions.</strong> Models default to whatever was popular in their training cut. Without a "use latest stable" rule, you get React 17 and Node 16 in 2026.</li>
+  <li><strong>Infinite retries.</strong> Without a 3-retry-then-ask rule, the agent burns tokens grinding on a problem it can't solve.</li>
+  <li><strong>Vague "done".</strong> Without a binary quality gate, "done" means whatever the model felt like.</li>
+</ul>
+
+<div class="callout">
+  <p><strong>The fix for all five</strong> is a per-project rules file (<code>AGENTS.md</code> or <code>CLAUDE.md</code>) that bakes those rules in. The agent reads it before doing anything. <a href="agents-md.html">Here's how to write one.</a></p>
+</div>
+
+<h2>Vibe coding ≠ no engineering</h2>
+<p>Vibe coding doesn't remove the need to think. It removes the need to <em>type</em>. You still own the architecture decision, the trade-offs, the "is this the right product to build", and the review. The agent owns the implementation, the boilerplate, the test harness, and the second-pass cleanups.</p>
+<p>Treated this way, vibe coding makes senior engineers more senior — you spend your day on the 20% of decisions that actually matter. Treated as "AI does everything", it produces shiny demos that fall apart at the first user.</p>
+
+<h2>Try it in one command</h2>
+<p>myVibe installs the entire workflow above into every AI coding agent on your machine — Claude Code, Copilot, Codex CLI, Cursor, Windsurf — with one line:</p>
+<pre><code># Windows
+iwr https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap.ps1 | iex
+
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap.sh | bash</code></pre>
+<div class="cta-row">
+  <a class="cta" href="https://github.com/Mohamed201389/myVibe">View on GitHub →</a>
+  <a class="cta ghost" href="./">Back to overview</a>
+</div>
+
+<h2>Further reading</h2>
+<ul>
+  <li><a href="agents-md.html">AGENTS.md vs CLAUDE.md vs .cursorrules — which one and why</a></li>
+  <li><a href="claude-code-skills.html">How to build a Claude Code skill</a></li>
+  <li><a href="cursor-rules.html">Cursor rules that actually work</a></li>
+</ul>
+
+<footer>
+  <p>Built by <a href="https://github.com/Mohamed201389">Mohamed Salah</a> · MIT licensed · <a href="https://github.com/Mohamed201389/myVibe">github.com/Mohamed201389/myVibe</a></p>
+</footer>
+
+</main>
+</body>
+</html>

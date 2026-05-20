@@ -1,0 +1,22 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor scratch
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local install artifacts (if anyone runs install scripts inside the repo)
+node_modules/
+dist/
+build/
+.cache/
+
+CHANGELOG.md
+LAUNCH.md
+submissions/
+scripts/

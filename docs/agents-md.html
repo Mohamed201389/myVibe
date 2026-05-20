@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AGENTS.md vs CLAUDE.md vs .cursorrules — the 2026 guide | myVibe</title>
+<meta name="description" content="What is AGENTS.md? When should you use CLAUDE.md, .cursorrules, .windsurfrules, or .github/copilot-instructions.md? A practical guide to the per-project rules files every AI coding agent reads — with a working template." />
+<link rel="canonical" href="https://mohamed201389.github.io/myVibe/agents-md.html" />
+<link rel="stylesheet" href="style.css" />
+<meta name="keywords" content="AGENTS.md, CLAUDE.md, .cursorrules, .windsurfrules, copilot-instructions.md, AI agent rules, per-project rules, AGENTS.md template, Claude Code memory, Cursor rules" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="myVibe" />
+<meta property="og:title" content="AGENTS.md vs CLAUDE.md vs .cursorrules — the 2026 guide" />
+<meta property="og:description" content="A practical guide to the per-project rules files every AI coding agent reads. With a working template." />
+<meta property="og:url" content="https://mohamed201389.github.io/myVibe/agents-md.html" />
+<meta property="og:image" content="https://opengraph.githubassets.com/1/Mohamed201389/myVibe" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AGENTS.md vs CLAUDE.md vs .cursorrules" />
+<meta name="twitter:description" content="The per-project rules files every AI coding agent reads, explained." />
+<meta name="twitter:image" content="https://opengraph.githubassets.com/1/Mohamed201389/myVibe" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "AGENTS.md vs CLAUDE.md vs .cursorrules — the 2026 guide",
+  "description": "What is AGENTS.md? When should you use CLAUDE.md, .cursorrules, or .windsurfrules?",
+  "author": { "@type": "Person", "name": "Mohamed Salah", "url": "https://github.com/Mohamed201389" },
+  "datePublished": "2026-05-20",
+  "dateModified": "2026-05-20",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://mohamed201389.github.io/myVibe/agents-md.html" }
+}
+</script>
+</head>
+<body>
+<main class="wrap">
+
+<nav class="top">
+  <a class="brand" href="./">myVibe</a>
+  <div class="links">
+    <a href="vibe-coding.html">Vibe coding</a>
+    <a href="agents-md.html">AGENTS.md</a>
+    <a href="claude-code-skills.html">Claude skills</a>
+    <a href="cursor-rules.html">Cursor rules</a>
+    <a href="https://github.com/Mohamed201389/myVibe">GitHub</a>
+  </div>
+</nav>
+
+<h1>AGENTS.md vs CLAUDE.md vs <span>.cursorrules</span></h1>
+<p class="lead">Every AI coding agent now reads a per-project rules file. The bad news: each agent has its own filename. The good news: the contents are basically the same. This guide explains which file each tool reads, what to put in them, and how to keep one source of truth so you don't end up with five copies that drift.</p>
+
+<h2>The filenames at a glance</h2>
+<table>
+  <thead><tr><th>File</th><th>Read by</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><code>AGENTS.md</code></td><td>OpenAI Codex CLI, generic agents, growing convention</td><td>The closest thing to a standard — push for this in new projects</td></tr>
+    <tr><td><code>CLAUDE.md</code></td><td>Claude Code</td><td>Anthropic's official memory file</td></tr>
+    <tr><td><code>.cursorrules</code></td><td>Cursor</td><td>Older; <code>.cursor/rules/*.mdc</code> is the newer per-feature format</td></tr>
+    <tr><td><code>.windsurfrules</code></td><td>Windsurf</td><td>Similar to .cursorrules</td></tr>
+    <tr><td><code>.github/copilot-instructions.md</code></td><td>GitHub Copilot</td><td>Repo-level instructions Copilot reads automatically</td></tr>
+    <tr><td><code>.aider.conf.yml</code> / <code>CONVENTIONS.md</code></td><td>Aider</td><td>Aider has its own convention; CONVENTIONS.md works broadly</td></tr>
+  </tbody>
+</table>
+
+<h2>What goes inside</h2>
+<p>The content is nearly identical across all of them. A good rules file answers five questions:</p>
+<ol>
+  <li><strong>What are we building?</strong> One paragraph about the project, the stack, and the audience.</li>
+  <li><strong>What's the workflow?</strong> Planning → tests → implementation → commit. The Ralph-style loop. The 3-retry rule.</li>
+  <li><strong>What are the style rules?</strong> Naming, formatting, error handling, no emojis in output, conventional commits.</li>
+  <li><strong>What's banned?</strong> Stale library versions, defensive over-engineering, "fix" without root cause, mega-PRs, untested code, secrets in code.</li>
+  <li><strong>What's the quality gate?</strong> Lint + types + tests + build all green, or it's not done.</li>
+</ol>
+
+<h2>A minimal AGENTS.md that works</h2>
+<pre><code># Project rules
+
+## What we're building
+Localhost-first {project type} with {stack}. {Audience}.
+
+## Workflow
+- Plan before code. Write PLAN.md when scope &gt; one file.
+- Failing test first. No green, no commit.
+- One feature per commit. Conventional commits.
+- 3 retries then ask. Don't grind forever.
+- Quality gate: lint + types + tests + build all green = "done".
+
+## Style
+- Latest stable library versions. No deprecated APIs.
+- Short modules, short functions, clear names.
+- Docstrings on public functions. Comments only where the code can't speak for itself.
+- No emojis in code or output.
+
+## Banned
+- Defensive over-engineering. No try/except wrappers without a reason.
+- Workarounds. Find root cause, then fix.
+- Secrets in code. Use .env and .env.example.
+
+## Tooling
+- Package manager: {npm | pnpm | uv | poetry}.
+- Lint: {eslint | ruff}.
+- Tests: {vitest | pytest}.
+- One source of truth. Don't duplicate config.
+</code></pre>
+
+<h2>The drift problem</h2>
+<p>The reason this is so annoying is that you need <em>the same content</em> in <em>five different filenames</em> if you use five different agents. People typically:</p>
+<ul>
+  <li>Maintain only one (usually <code>CLAUDE.md</code>) and the others stay stale or empty.</li>
+  <li>Symlink them all to one file — fragile on Windows, breaks on git clone for teammates.</li>
+  <li>Write five copies and watch them drift over a month.</li>
+</ul>
+<p>None of these are great. The right answer is to <strong>generate them all from one template</strong>.</p>
+
+<div class="callout">
+  <p>That's exactly what <a href="./"><code>myvibe init</code></a> does. From inside any repo, run one command and it drops <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>.cursorrules</code>, <code>.windsurfrules</code>, and <code>.github/copilot-instructions.md</code> — all from the same template. Commit the lot. Every teammate's agent is now reading the same rules.</p>
+  <pre><code>pwsh -File ~/.agents/skills/myvibe/myvibe-init.ps1   # Windows
+bash ~/.agents/skills/myvibe/myvibe-init.sh          # macOS / Linux</code></pre>
+</div>
+
+<h2>Should you push for AGENTS.md as the standard?</h2>
+<p>Yes. <code>AGENTS.md</code> is the closest thing to a vendor-neutral standard right now — it doesn't lead with a brand name, it's already adopted by OpenAI's Codex CLI and a growing list of agents, and it slots naturally next to <code>README.md</code> and <code>CONTRIBUTING.md</code>. The other filenames will continue to exist (vendors will keep their own conventions), but treating AGENTS.md as the master and generating the others from it is a clean path forward.</p>
+
+<h2>One-line install</h2>
+<pre><code># Windows
+iwr https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap.ps1 | iex
+
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap.sh | bash</code></pre>
+
+<div class="cta-row">
+  <a class="cta" href="https://github.com/Mohamed201389/myVibe">View on GitHub →</a>
+  <a class="cta ghost" href="./">Back to overview</a>
+</div>
+
+<h2>Further reading</h2>
+<ul>
+  <li><a href="vibe-coding.html">What is vibe coding? A 2026 guide</a></li>
+  <li><a href="claude-code-skills.html">How to build a Claude Code skill</a></li>
+  <li><a href="cursor-rules.html">Cursor rules that actually work</a></li>
+</ul>
+
+<footer>
+  <p>Built by <a href="https://github.com/Mohamed201389">Mohamed Salah</a> · MIT licensed · <a href="https://github.com/Mohamed201389/myVibe">github.com/Mohamed201389/myVibe</a></p>
+</footer>
+
+</main>
+</body>
+</html>

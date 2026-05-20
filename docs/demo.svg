@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 880 520" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="15">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d0d0d"/>
+      <stop offset="1" stop-color="#070707"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="0.4"/></filter>
+  </defs>
+
+  <!-- Window chrome -->
+  <rect width="880" height="520" rx="10" fill="url(#bg)"/>
+  <rect width="880" height="34" rx="10" fill="#161616"/>
+  <rect y="24" width="880" height="10" fill="#161616"/>
+  <circle cx="20" cy="17" r="6" fill="#ff5f57"/>
+  <circle cx="40" cy="17" r="6" fill="#febc2e"/>
+  <circle cx="60" cy="17" r="6" fill="#28c840"/>
+  <text x="440" y="22" fill="#666" text-anchor="middle" font-size="12">~ — powershell — myVibe install</text>
+
+  <!-- Lines -->
+  <g fill="#e5e5e5" filter="url(#glow)">
+    <text x="20" y="70"><tspan fill="#a3e635">PS</tspan> <tspan fill="#888">G:\projects&gt;</tspan> <tspan id="cmd"></tspan><animate xlink:href="#cmd" attributeName="textLength" from="0" to="520" dur="2.4s" begin="0.4s" fill="freeze"/></text>
+
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="3.0s" dur="0.3s" fill="freeze"/>
+      <text x="20" y="100" fill="#888">[+] downloading installer...</text>
+      <text x="20" y="120" fill="#888">[+] detected: <tspan fill="#e5e5e5">claude-code, github-copilot, cursor</tspan></text>
+      <text x="20" y="140" fill="#888">[+] writing AGENTS.md, CLAUDE.md, .cursorrules, .github/copilot-instructions.md</text>
+      <text x="20" y="160" fill="#a3e635">[OK] myVibe installed across 3 agents in 0.9s</text>
+    </g>
+
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="4.0s" dur="0.3s" fill="freeze"/>
+      <text x="20" y="200"><tspan fill="#a3e635">PS</tspan> <tspan fill="#888">G:\projects&gt;</tspan> <tspan id="cmd2"></tspan><animate xlink:href="#cmd2" attributeName="textLength" from="0" to="380" dur="1.8s" begin="4.2s" fill="freeze"/></text>
+    </g>
+
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="6.2s" dur="0.3s" fill="freeze"/>
+      <text x="20" y="240" fill="#888">[copilot] reading AGENTS.md...</text>
+      <text x="20" y="260" fill="#888">[copilot] stack: <tspan fill="#e5e5e5">Vite + React + TS + Tailwind + shadcn</tspan></text>
+      <text x="20" y="280" fill="#888">[copilot] scaffolding kanban-app/</text>
+      <text x="20" y="300" fill="#888">[copilot] installing deps (pnpm i)... <tspan fill="#a3e635">done</tspan></text>
+      <text x="20" y="320" fill="#888">[copilot] running tests... <tspan fill="#a3e635">12/12 passed</tspan></text>
+      <text x="20" y="340" fill="#888">[copilot] starting dev server...</text>
+    </g>
+
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="8.0s" dur="0.4s" fill="freeze"/>
+      <rect x="14" y="360" width="852" height="60" rx="6" fill="#0f1a08" stroke="#a3e635" stroke-width="1"/>
+      <text x="32" y="385" fill="#a3e635">  ready in 412ms</text>
+      <text x="32" y="405" fill="#e5e5e5">  ▶  Local:   http://localhost:5173/</text>
+    </g>
+
+    <g opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="8.6s" dur="0.4s" fill="freeze"/>
+      <text x="20" y="450" fill="#666">one line in. finished app out.</text>
+      <text x="20" y="475" fill="#a3e635">myVibe</text>
+      <text x="80" y="475" fill="#666">— github.com/Mohamed201389/myVibe</text>
+    </g>
+
+    <!-- Cursor -->
+    <rect x="20" y="58" width="8" height="16" fill="#a3e635">
+      <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+
+  <!-- The actual command text rendered as plain (animated via textLength trick is fake; use foreignObject typewriter instead) -->
+  <g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="15" fill="#e5e5e5">
+    <text x="115" y="70">
+      <tspan>iwr myvibe.dev/i | iex</tspan>
+      <set attributeName="opacity" to="0"/>
+      <animate attributeName="opacity" from="0" to="1" begin="0.4s" dur="0.1s" fill="freeze"/>
+    </text>
+    <text x="115" y="200" opacity="0">
+      <tspan>myvibe init "build me a kanban app"</tspan>
+      <animate attributeName="opacity" from="0" to="1" begin="4.2s" dur="0.1s" fill="freeze"/>
+    </text>
+  </g>
+
+  <!-- Loop -->
+  <animate attributeName="opacity" values="1;1;1" dur="11s" repeatCount="indefinite"/>
+</svg>

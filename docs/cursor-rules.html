@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cursor rules that actually work (.cursorrules guide, 2026) | myVibe</title>
+<meta name="description" content="A practical guide to writing .cursorrules and .cursor/rules/*.mdc files that change Cursor's behavior. With a working template, examples, and the common mistakes that make Cursor ignore your rules." />
+<link rel="canonical" href="https://mohamed201389.github.io/myVibe/cursor-rules.html" />
+<link rel="stylesheet" href="style.css" />
+<meta name="keywords" content=".cursorrules, cursor rules, cursor IDE, .cursor/rules, Cursor AI editor, cursor.mdc, cursor rules template" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="myVibe" />
+<meta property="og:title" content="Cursor rules that actually work" />
+<meta property="og:description" content="A practical guide to .cursorrules and .cursor/rules/*.mdc with a working template." />
+<meta property="og:url" content="https://mohamed201389.github.io/myVibe/cursor-rules.html" />
+<meta property="og:image" content="https://opengraph.githubassets.com/1/Mohamed201389/myVibe" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Cursor rules that actually work" />
+<meta name="twitter:description" content="The .cursorrules guide for 2026 with a template." />
+<meta name="twitter:image" content="https://opengraph.githubassets.com/1/Mohamed201389/myVibe" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Cursor rules that actually work",
+  "author": { "@type": "Person", "name": "Mohamed Salah", "url": "https://github.com/Mohamed201389" },
+  "datePublished": "2026-05-20",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://mohamed201389.github.io/myVibe/cursor-rules.html" }
+}
+</script>
+</head>
+<body>
+<main class="wrap">
+
+<nav class="top">
+  <a class="brand" href="./">myVibe</a>
+  <div class="links">
+    <a href="vibe-coding.html">Vibe coding</a>
+    <a href="agents-md.html">AGENTS.md</a>
+    <a href="claude-code-skills.html">Claude skills</a>
+    <a href="cursor-rules.html">Cursor rules</a>
+    <a href="https://github.com/Mohamed201389/myVibe">GitHub</a>
+  </div>
+</nav>
+
+<h1>Cursor rules that <span>actually work</span></h1>
+<p class="lead">Cursor reads two kinds of rule files: the legacy <code>.cursorrules</code> at the project root, and the newer per-feature <code>.cursor/rules/*.mdc</code> with front-matter. This guide explains both, what to put in them, and the common mistakes that cause Cursor to ignore your rules entirely.</p>
+
+<h2>The two formats</h2>
+<table>
+  <thead><tr><th>Format</th><th>Path</th><th>Scope</th></tr></thead>
+  <tbody>
+    <tr><td><strong>.cursorrules</strong></td><td>Project root</td><td>Whole repo, always-on. Older, still supported.</td></tr>
+    <tr><td><strong>.cursor/rules/*.mdc</strong></td><td><code>.cursor/rules/</code> folder</td><td>Per-feature, scoped by glob via front-matter. Newer, recommended.</td></tr>
+    <tr><td><strong>User-level .cursor/rules/*.mdc</strong></td><td><code>~/.cursor/rules/</code></td><td>Applies across all your repos.</td></tr>
+  </tbody>
+</table>
+
+<h2>The .mdc format</h2>
+<pre><code>---
+description: Rules for the React frontend.
+globs:
+  - "src/**/*.tsx"
+  - "src/**/*.ts"
+alwaysApply: false
+---
+
+# React conventions
+
+- Functional components only, hooks only.
+- Tailwind for styling, no CSS modules.
+- TanStack Query for server state, Zustand for client state.
+- No useEffect for data fetching — use Query.</code></pre>
+
+<p>Three front-matter fields matter:</p>
+<ul>
+  <li><strong><code>description</code></strong> — Cursor uses this to summarize the rule in chat.</li>
+  <li><strong><code>globs</code></strong> — file patterns this rule applies to. Cursor only loads rules whose globs match the files currently open or referenced.</li>
+  <li><strong><code>alwaysApply</code></strong> — when <code>true</code>, the rule loads regardless of which files are open. Use sparingly.</li>
+</ul>
+
+<h2>The common mistakes</h2>
+<ol>
+  <li><strong>Writing 2000 words of prose.</strong> Cursor doesn't read essays — it reads rules. Use short, declarative bullets. "X, not Y" beats "we generally prefer X because…".</li>
+  <li><strong>No globs.</strong> Without globs, your rule never auto-loads. Set globs or use <code>alwaysApply: true</code>.</li>
+  <li><strong>Conflicting rules.</strong> Two .mdc files saying "use Zustand" and "use Jotai" → Cursor picks one and you blame the tool. Resolve conflicts at the project level.</li>
+  <li><strong>Generic "be a good engineer" rules.</strong> They don't change behavior. Be specific: "no useEffect for data fetching", not "write clean code".</li>
+  <li><strong>Forgetting to commit.</strong> Rules in <code>.cursor/rules/</code> belong in git. Teammates need them too.</li>
+</ol>
+
+<h2>A working .cursorrules template</h2>
+<pre><code># Project rules
+
+## Stack
+- Frontend: React 19 + Vite 8 + TypeScript 5 + Tailwind 4 + shadcn/ui
+- Backend: Fastify + Prisma + Postgres
+- Tests: Vitest (unit), Playwright (e2e)
+- Package manager: pnpm
+
+## Workflow
+- Plan before code. Write PLAN.md when scope &gt; one file.
+- Failing test first. No green, no commit.
+- One feature per commit. Conventional commits.
+- 3 retries then ask. Don't grind forever.
+- Quality gate: lint + types + tests + build all green = "done".
+
+## Style
+- Functional components only. Hooks only.
+- Tailwind utility classes. No CSS modules, no styled-components.
+- Server state with TanStack Query. Client state with Zustand.
+- No useEffect for data fetching.
+- No emojis in code or output.
+- Latest stable library versions.
+
+## Banned
+- Defensive over-engineering. No try/except wrappers without a reason.
+- Workarounds. Find root cause, then fix.
+- Mega-PRs. One feature per commit.
+- Secrets in code. Use .env / .env.example.</code></pre>
+
+<h2>Keep it in sync with your other agents</h2>
+<p>If you use Cursor and Claude Code and Copilot, you don't want three drift-prone copies. Generate them all from one template instead:</p>
+<div class="callout">
+  <p><a href="./">myVibe</a> ships a per-project initializer that creates <code>.cursorrules</code>, <code>AGENTS.md</code>, <code>CLAUDE.md</code>, <code>.windsurfrules</code>, and <code>.github/copilot-instructions.md</code> from one template, so every agent reads the same rules.</p>
+  <pre><code>pwsh -File ~/.agents/skills/myvibe/myvibe-init.ps1   # Windows
+bash ~/.agents/skills/myvibe/myvibe-init.sh          # macOS / Linux</code></pre>
+</div>
+
+<h2>One-line install</h2>
+<pre><code># Windows
+iwr https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap.ps1 | iex
+
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap.sh | bash</code></pre>
+<div class="cta-row">
+  <a class="cta" href="https://github.com/Mohamed201389/myVibe">View on GitHub →</a>
+  <a class="cta ghost" href="./">Back to overview</a>
+</div>
+
+<h2>Further reading</h2>
+<ul>
+  <li><a href="vibe-coding.html">What is vibe coding?</a></li>
+  <li><a href="agents-md.html">AGENTS.md vs CLAUDE.md vs .cursorrules</a></li>
+  <li><a href="claude-code-skills.html">How to build a Claude Code skill</a></li>
+</ul>
+
+<footer>
+  <p>Built by <a href="https://github.com/Mohamed201389">Mohamed Salah</a> · MIT licensed · <a href="https://github.com/Mohamed201389/myVibe">github.com/Mohamed201389/myVibe</a></p>
+</footer>
+
+</main>
+</body>
+</html>

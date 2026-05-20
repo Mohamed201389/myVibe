@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>How to build a Claude Code skill (2026 guide + template) | myVibe</title>
+<meta name="description" content="Claude Code skills are reusable workflows you install once and Claude invokes by trigger phrase. This guide explains the SKILL.md format, the auto-discovery rules, and ships a working template you can adapt." />
+<link rel="canonical" href="https://mohamed201389.github.io/myVibe/claude-code-skills.html" />
+<link rel="stylesheet" href="style.css" />
+<meta name="keywords" content="Claude Code skill, SKILL.md, Claude skills tutorial, Claude Code memory, ~/.claude/skills/, Anthropic Claude agent" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="myVibe" />
+<meta property="og:title" content="How to build a Claude Code skill (2026 guide)" />
+<meta property="og:description" content="The SKILL.md format, the auto-discovery rules, and a working template." />
+<meta property="og:url" content="https://mohamed201389.github.io/myVibe/claude-code-skills.html" />
+<meta property="og:image" content="https://opengraph.githubassets.com/1/Mohamed201389/myVibe" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="How to build a Claude Code skill" />
+<meta name="twitter:description" content="The SKILL.md format, auto-discovery, and a template." />
+<meta name="twitter:image" content="https://opengraph.githubassets.com/1/Mohamed201389/myVibe" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "How to build a Claude Code skill",
+  "author": { "@type": "Person", "name": "Mohamed Salah", "url": "https://github.com/Mohamed201389" },
+  "datePublished": "2026-05-20",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://mohamed201389.github.io/myVibe/claude-code-skills.html" }
+}
+</script>
+</head>
+<body>
+<main class="wrap">
+
+<nav class="top">
+  <a class="brand" href="./">myVibe</a>
+  <div class="links">
+    <a href="vibe-coding.html">Vibe coding</a>
+    <a href="agents-md.html">AGENTS.md</a>
+    <a href="claude-code-skills.html">Claude skills</a>
+    <a href="cursor-rules.html">Cursor rules</a>
+    <a href="https://github.com/Mohamed201389/myVibe">GitHub</a>
+  </div>
+</nav>
+
+<h1>How to build a <span>Claude Code</span> skill</h1>
+<p class="lead">Claude Code skills are reusable workflows you install once into <code>~/.claude/skills/</code> and Claude automatically invokes when you say a trigger phrase. This guide walks through the <code>SKILL.md</code> format, the auto-discovery rules, and a working template you can copy.</p>
+
+<h2>What a skill actually is</h2>
+<p>A skill is just <strong>a folder containing a <code>SKILL.md</code> file</strong>. The folder lives at <code>~/.claude/skills/&lt;skill-name&gt;/</code>. Claude reads the front-matter of the file to decide whether to load it, then follows the instructions inside.</p>
+
+<p>Skills aren't extensions. They're not code. They're not API calls. They're markdown that tells Claude how to behave in a specific situation. The leverage comes from <em>auto-invocation</em> — Claude scans the descriptions of your installed skills before each turn and pulls in the relevant one without you having to type a command.</p>
+
+<h2>The folder layout</h2>
+<pre><code>~/.claude/skills/
+  my-skill/
+    SKILL.md            # required — the manifest
+    00-START-HERE.md    # optional supporting files
+    01-step.md
+    template.md</code></pre>
+
+<h2>The SKILL.md format</h2>
+<p>A minimal skill:</p>
+<pre><code>---
+name: my-skill
+description: Triggers when the user asks to do {X}. Use this skill when the user says "{phrase 1}", "{phrase 2}", or wants to {scenario}.
+---
+
+# Instructions
+
+When this skill activates:
+1. Read 00-START-HERE.md before doing anything else.
+2. Follow the steps in numbered order.
+3. Don't ask the user to re-confirm what's already in the description.
+</code></pre>
+
+<p>Two fields matter:</p>
+<ul>
+  <li><strong><code>name</code></strong> — lowercase, hyphenated, unique on your machine.</li>
+  <li><strong><code>description</code></strong> — the most important field. Claude uses this to decide whether to load the skill. Write it as "Triggers when the user says X / wants Y". Include 4–8 concrete trigger phrases.</li>
+</ul>
+
+<h2>Auto-invocation rules</h2>
+<ol>
+  <li>Claude scans skill descriptions <em>before</em> generating each response.</li>
+  <li>If the user's message matches the description's pattern, the full skill body is pulled into context.</li>
+  <li>If multiple skills match, Claude picks the most specific one (or loads several if they're complementary).</li>
+  <li>You can always force-load with <code>/skill my-skill</code> in Claude Code.</li>
+</ol>
+
+<h2>Writing a description that actually triggers</h2>
+<p>This is where most skills fail. Bad descriptions:</p>
+<ul>
+  <li><em>"This skill helps with coding."</em> — too vague, never triggers.</li>
+  <li><em>"Use this skill always."</em> — Claude ignores skills that don't describe a situation.</li>
+  <li><em>"My amazing skill 🚀"</em> — no trigger phrases.</li>
+</ul>
+<p>Good descriptions:</p>
+<ul>
+  <li><em>"Triggers when the user wants to scaffold a new project. Use when the user says 'build me a kanban app', 'create a saas dashboard', 'scaffold a portfolio', 'vibe code', or 'start a new project'."</em></li>
+  <li><em>"Use this skill when the user asks to write a Terraform module. Triggers on 'terraform', 'IaC', 'provision infra', or any aws_/azurerm_ resource."</em></li>
+</ul>
+
+<h2>What goes in the body</h2>
+<p>The body is loaded only after the description matches, so it can be long. A typical body has:</p>
+<ol>
+  <li><strong>Preamble</strong> — what the skill does, what its scope is, what's out of scope.</li>
+  <li><strong>Phases</strong> — numbered steps the agent should follow.</li>
+  <li><strong>Quality rules</strong> — what "done" means.</li>
+  <li><strong>References</strong> — pointers to supporting files in the same folder. Claude can read them on demand.</li>
+</ol>
+
+<h2>A working example</h2>
+<p>myVibe is a real, public Claude Code skill. Its <a href="https://github.com/Mohamed201389/myVibe/blob/main/SKILL.md"><code>SKILL.md</code></a> looks roughly like:</p>
+<pre><code>---
+name: myvibe
+description: Build a complete, professional, localhost-running project from a one-line command. Use when the user asks to "build a project", "scaffold an app", "create a [kanban / saas / dashboard / portfolio / api / tool]", "vibe code", "use myVibe", "start a new project", or "make me a [type of app]".
+---
+
+# myVibe
+
+Run a one-shot intake, then plan, scaffold, build, test, and ship without mid-build interrogation. Localhost-first.
+
+1. Read INTAKE.md and ask the user the 18 sections in a single round with sensible defaults pre-filled.
+2. On "go", write PLAN.md and read 00-START-HERE.md.
+3. Execute phases 01 through 14 in order, gated by the quality rules in 14-quality-gates.md.
+</code></pre>
+
+<h2>Installation</h2>
+<p>Drop the folder into <code>~/.claude/skills/</code> and add one line to <code>~/.claude/CLAUDE.md</code>:</p>
+<pre><code>## my-skill
+When the user gives a one-line project command, follow ~/.claude/skills/my-skill/SKILL.md.</code></pre>
+<p>That hint line isn't strictly required — auto-discovery works without it — but it gives Claude a stronger nudge.</p>
+
+<h2>Distribute it</h2>
+<p>The fastest way to ship a skill to the world is a Git repo plus a one-line installer. Users run:</p>
+<pre><code>curl -fsSL https://raw.githubusercontent.com/&lt;you&gt;/&lt;repo&gt;/main/install.sh | bash</code></pre>
+<p>and the installer clones the repo and copies the skill folder to <code>~/.claude/skills/&lt;name&gt;/</code>. Look at <a href="https://github.com/Mohamed201389/myVibe/blob/main/install.sh">myVibe's install.sh</a> for a copy-paste-ready template.</p>
+
+<h2>Try a finished one in one line</h2>
+<pre><code># Windows
+iwr https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap.ps1 | iex
+
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/Mohamed201389/myVibe/main/bootstrap.sh | bash</code></pre>
+<div class="cta-row">
+  <a class="cta" href="https://github.com/Mohamed201389/myVibe">View myVibe on GitHub →</a>
+  <a class="cta ghost" href="./">Back to overview</a>
+</div>
+
+<h2>Further reading</h2>
+<ul>
+  <li><a href="vibe-coding.html">What is vibe coding?</a></li>
+  <li><a href="agents-md.html">AGENTS.md vs CLAUDE.md vs .cursorrules</a></li>
+  <li><a href="cursor-rules.html">Cursor rules that actually work</a></li>
+</ul>
+
+<footer>
+  <p>Built by <a href="https://github.com/Mohamed201389">Mohamed Salah</a> · MIT licensed · <a href="https://github.com/Mohamed201389/myVibe">github.com/Mohamed201389/myVibe</a></p>
+</footer>
+
+</main>
+</body>
+</html>
