@@ -59,11 +59,8 @@ if want generic; then
 fi
 
 if want copilot; then
-  echo "[copilot] VS Code prompts (/myvibe, /myedit)"
+  echo "[copilot] VS Code prompt"
   install_path "$SOURCE/$PROMPT_NAME" "$VSCODE_USER/prompts/$PROMPT_NAME"
-  if [[ -f "$SOURCE/myedit/myedit.prompt.md" ]]; then
-    install_path "$SOURCE/myedit/myedit.prompt.md" "$VSCODE_USER/prompts/myedit.prompt.md"
-  fi
 fi
 
 if want claude; then
@@ -97,7 +94,7 @@ echo ""
 echo "Done."
 echo ""
 echo "Quick start:"
-echo "  VS Code Copilot : reload window, then type '/myvibe' (new projects) or '/myedit' (existing projects)"
+echo "  VS Code Copilot : reload window, type '/myvibe' — works for new projects AND for editing/debugging existing ones (auto-detects)"
 echo "  Claude Code     : 'use the myvibe skill to build a kanban app'"
 echo "  Codex CLI       : 'use the myvibe skill: build me a kanban app'"
 echo "  Any agent       : 'build me a kanban app' (auto-matches via skill description)"

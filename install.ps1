@@ -79,12 +79,8 @@ if ($all -or $wanted -contains 'generic') {
 }
 
 if ($all -or $wanted -contains 'copilot') {
-  Write-Host "[copilot] VS Code prompts (/myvibe, /myedit)" -ForegroundColor Magenta
+  Write-Host "[copilot] VS Code prompt" -ForegroundColor Magenta
   Install-Path -From $promptSrc -To (Join-Path (Get-VSCodeUserDir) "prompts/$promptName") -Sym:$Symlink
-  $editPrompt = Join-Path $Source 'myedit/myedit.prompt.md'
-  if (Test-Path $editPrompt) {
-    Install-Path -From $editPrompt -To (Join-Path (Get-VSCodeUserDir) 'prompts/myedit.prompt.md') -Sym:$Symlink
-  }
 }
 
 if ($all -or $wanted -contains 'claude') {
@@ -114,7 +110,7 @@ Write-Host ""
 Write-Host "Done." -ForegroundColor Green
 Write-Host ""
 Write-Host "Quick start:"
-Write-Host "  VS Code Copilot : reload window, then type '/myvibe' (new projects) or '/myedit' (existing projects)"
+Write-Host "  VS Code Copilot : reload window, type '/myvibe' — works for new projects AND for editing/debugging existing ones (auto-detects)"
 Write-Host "  Claude Code     : 'use the myvibe skill to build a kanban app'"
 Write-Host "  Codex CLI       : 'use the myvibe skill: build me a kanban app'"
 Write-Host "  Any agent       : 'build me a kanban app' (auto-matches via skill description)"

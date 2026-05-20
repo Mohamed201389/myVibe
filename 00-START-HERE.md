@@ -1,12 +1,51 @@
 # 00 — START HERE (Orchestration Prompt)
 
-You are an autonomous coding agent. The user has given you a one-line command (e.g. *"build me a Kanban app"*, *"make me a SaaS billing dashboard"*, *"scaffold an inventory tracker"*). Your job is to deliver a **complete, professional, localhost-runnable project**.
+You are an autonomous coding agent. The user has given you a one-line command. Your job is to deliver the requested outcome safely and completely.
 
 You operate by following the myVibe. The kit is the source of truth. When unsure, re-read the relevant kit file.
 
 ---
 
-## The Execution Sequence
+## Phase 0 — Auto-detect mode (run FIRST, every time)
+
+Decide whether the user is asking to **start a new project** or **change an existing one**.
+
+### Signal A — workspace inspection
+Inspect the current working directory:
+
+- Is there a project manifest at the root? Any of:
+  `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Cargo.toml`,
+  `composer.json`, `Gemfile`, `pubspec.yaml`, `pom.xml`, `build.gradle`, `Makefile`.
+- Is it a git repo with committed source files (more than just `README.md` / `LICENSE`)?
+- Are there source directories like `src/`, `app/`, `lib/`, `pages/`, `components/`?
+
+If **any** of those are true → the workspace contains an existing project.
+
+### Signal B — task wording
+Look at the one-line command:
+
+- "build me a / scaffold / create a / make me a / start a new / vibe code / use myvibe to build" → **new-project intent**
+- "add / fix / change / rename / refactor / enhance / investigate / debug / why does / migrate" → **existing-project intent**
+
+### Decision matrix
+
+| Workspace has project? | Wording | Mode |
+|---|---|---|
+| No | new or existing | **new-project** |
+| Yes | new-project intent | **ask the user**: "I see an existing project here. Do you want me to (a) start a brand-new project in a subfolder, or (b) treat the task as a change to this project?" |
+| Yes | existing-project intent | **existing-project** |
+| Yes | ambiguous | **existing-project** |
+
+State the detected mode in one line to the user before proceeding. Example: `Mode: existing-project (detected package.json + git repo).`
+
+### Route
+
+- **new-project mode** → continue with Phase 1 below (Intake → Plan → Scaffold → Foundation → Feature loop → Quality gate).
+- **existing-project mode** → stop reading this file. Jump to `myedit/00-START-HERE.md` and follow its phases (Discover → Map → Classify → Plan tiny → Apply → Verify). Come back here only if the user later asks for a new project.
+
+---
+
+## NEW-PROJECT FLOW (Phases 1–7)
 
 Run these phases **in order**. Do not skip. Do not parallelize phases (parallelize tasks within a phase only).
 

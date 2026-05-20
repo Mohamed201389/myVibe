@@ -1,23 +1,28 @@
 ---
 mode: agent
-description: Run the myVibe to take a one-line project command from idea to a complete, tested, localhost-running project in a single end-to-end run.
+description: One command for new projects, edits, enhancements, and debugging. Auto-detects whether the current workspace is a new project or an existing codebase and routes accordingly.
 ---
 
-# Execute Kit
+# Execute myVibe
 
-Read `myvibe/SKILL.md`, then `myvibe/INTAKE.md`, then `myvibe/00-START-HERE.md`. Follow them exactly.
+Read `myvibe/SKILL.md`, then `myvibe/00-START-HERE.md`. Follow them exactly.
 
-The user's project command is below. Run the **one-shot intake** first (fill defaults, send to user in one message, wait for "go" with overrides). After "go", lock the contract and build the project end-to-end without re-asking.
+First, run the **auto-detect** step in `00-START-HERE.md` to decide the mode:
 
-Constraints:
+- **new-project mode** — the workspace is empty or has no project manifest. Run the myVibe intake + build flow (files `INTAKE.md` → `00-START-HERE.md` → `01-plan.md` … `14-quality-gates.md`).
+- **existing-project mode** — the workspace has a project manifest (`package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `composer.json`, `Gemfile`, `pubspec.yaml`, etc.) or is a git repo with source files. Run the myedit flow (files `myedit/01-discover.md` → `myedit/02-map.md` → … → `myedit/07-verify.md`).
+
+Constraints (both modes):
 - Localhost-first. No deployment, no cloud.
 - Latest stable library versions.
-- Tests are part of every feature.
+- Tests are part of every change.
 - No emojis anywhere.
-- Push back on requests that contradict the locked intake.
+- Read before edit. Prove root cause before fixing.
+- Push back on requests that contradict the locked plan/intake.
 
 ---
 
-## Project command
+## Command
 
-${input:command:Describe the project in one line (e.g. "Build me a kanban app with drag-and-drop")}
+${input:command:Describe the task in one line. Examples: "build me a kanban app" (new project) | "add dark mode toggle" | "fix the login redirect bug" | "investigate slow uploads"}
+

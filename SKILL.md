@@ -1,23 +1,43 @@
 ---
 name: myvibe
-description: Build a complete, professional, localhost-running project from a one-line command. Use when the user asks to "build a project", "scaffold an app", "create a [kanban / saas / dashboard / portfolio / api / tool]", "vibe code", "use myVibe", "start a new project", "make me a [type of app]", or any request to take a project from idea to working localhost app end-to-end. Runs a one-shot intake (collects all decisions upfront in a single round), then plans, scaffolds, builds, tests, and ships without mid-build interrogation. Localhost-first — deployment is explicitly out of scope.
+description: One command for the full project lifecycle. Auto-detects whether the workspace is empty (new project) or has an existing codebase (edit / enhance / debug), then routes to the right flow. NEW PROJECT mode runs intake → plan → scaffold → build → test from a one-line idea like "build me a kanban app". EXISTING PROJECT mode runs discover → map → classify → plan-tiny → apply → verify on tasks like "add dark mode", "fix the login redirect", or "investigate slow uploads". Same command, same philosophy, two flows. Localhost-first, vendor-neutral.
 ---
 
 # myVibe
 
-A deterministic operating system for shipping professional software projects from a single one-line command. Vendor-neutral: works the same on any coding model.
+A deterministic operating system for shipping software — whether starting from scratch or evolving a running codebase. Vendor-neutral: works on any coding model.
 
 ## When to invoke this skill
 
-The user gives you a one-line project command. Examples:
+The user gives you a one-line command. Two intents are valid:
+
+**New project (greenfield):**
 - "Build me a kanban board with drag-and-drop"
 - "Make a SaaS billing dashboard"
 - "Scaffold an inventory tracker"
 - "Create a portfolio site with scroll animations"
-- "I want a meal-planner app"
-- "Use the execute kit to build X"
 
-Do NOT invoke for: small edits to existing projects, single-file requests, debugging existing code, or pure questions. The kit is for **new project creation**.
+**Existing project (change request):**
+- "Add a dark mode toggle to the settings page"
+- "Fix the login redirect loop"
+- "Refactor auth to use JWT"
+- "Investigate why uploads time out over 5MB"
+- "Enhance search to support fuzzy matching"
+
+Do NOT invoke for: pure questions that don't change code.
+
+## Always start with Phase 0 — Auto-detect
+
+Read `00-START-HERE.md` and run the **Phase 0 auto-detect** step. It inspects the workspace (manifest files, git, source dirs) and the task wording, then chooses:
+
+- **new-project mode** → continue with the protocol below (intake → plan → scaffold → build)
+- **existing-project mode** → jump to `myedit/SKILL.md` + `myedit/00-START-HERE.md` and follow that flow
+
+If ambiguous (e.g. existing project + new-project wording), ask the user one focused question before routing.
+
+---
+
+## NEW-PROJECT PROTOCOL (when auto-detect returns new-project)
 
 ## The protocol (follow strictly)
 
